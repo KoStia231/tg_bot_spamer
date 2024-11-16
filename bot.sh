@@ -1,22 +1,8 @@
 #!/bin/bash
 
-ENV_FILE=".env"
-
-if [ -f "$ENV_FILE" ]; then
-    echo "Загрузка переменных из .env..."
-    export $(grep -v '^#' "$ENV_FILE" | xargs)
-else
-    echo "Ошибка: файл .env не найден!"
-    exit 1
-fi
-
-if [ -z "$PROJECT_PATH" ]; then
-    echo "Ошибка: PROJECT_PATH не задан в .env файле!"
-    exit 1
-fi
+PROJECT_PATH=$(dirname "$(realpath "$0")")
 
 VENV_PATH="$PROJECT_PATH/.venv/bin/activate"
-
 MAIN_FILE="main.py"
 
 while true
