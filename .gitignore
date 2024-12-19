@@ -1,3 +1,6 @@
 .env
-session_name.session
 .idea
+*.log
+*.pyc
+*.csv
+*.session
