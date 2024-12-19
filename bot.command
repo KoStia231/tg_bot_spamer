@@ -3,20 +3,18 @@
 PROJECT_PATH=$(dirname "$(realpath "$0")")
 
 VENV_PATH="$PROJECT_PATH/.venv/bin/activate"
-MAIN_FILE="main.py"
+MAIN_FILE="src/main.py"
 
-while true
-do
-    echo "Запуск main.py..."
+echo "Запуск скрипта"
 
-    cd "$PROJECT_PATH" || exit
+cd "$PROJECT_PATH" || exit
 
-    source "$VENV_PATH"
+source "$VENV_PATH"
 
-    python "$MAIN_FILE"
+export PYTHONPATH="$PROJECT_PATH"
 
-    deactivate
+python "$MAIN_FILE"
 
-    echo "Процесс завершен. Перезапуск через 2 секунд..."
-    sleep 2
-done
+deactivate
+
+echo "Процесс завершен."

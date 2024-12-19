@@ -1,27 +1,9 @@
 import asyncio
 import os
 
-from dotenv import load_dotenv
 from telethon import TelegramClient
 
-load_dotenv()
-
-API_ID = os.getenv('API_ID')
-API_HASH = os.getenv('API_HASH')
-
-SESSION_DIR = "sessions"
-os.makedirs(SESSION_DIR, exist_ok=True)
-
-
-async def save_session():
-    """Сохранение новой сессии с номером телефона."""
-    phone = input("Введите номер телефона (с кодом страны):\n")
-    session_path = os.path.join(SESSION_DIR, f"{phone}.session")
-    client = TelegramClient(session_path, API_ID, API_HASH)
-
-    await client.start(phone=phone)
-    print(f"Сессия для {phone} успешно сохранена!")
-    await client.disconnect()
+from src import API_ID, API_HASH, SESSION_DIR
 
 
 async def send_messages_with_delay(client, chat_id, message, counts):
@@ -84,29 +66,3 @@ async def send_from_all_sessions():
         await client.start()
         await send_messages_with_delay(client, chat_id, message, counts)
         await client.disconnect()
-
-
-async def main():
-    while True:
-        print("\nВыберите действие:")
-        print("1. Сохранить новую сессию")
-        print("2. Написать сообщение от одной сессии")
-        print("3. Написать сообщение от всех сессий")
-        print("0. Выйти")
-
-        choice = input("Введите номер действия:\n")
-        if choice == "1":
-            await save_session()
-        elif choice == "2":
-            await send_from_single_session()
-        elif choice == "3":
-            await send_from_all_sessions()
-        elif choice == "0":
-            print("Выход...")
-            break
-        else:
-            print("Неверный выбор, попробуйте снова.")
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
